@@ -37,8 +37,8 @@ def setMoisture():
         sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
     return jsonify(data)
 
-@app.post('/sensor/temp/humidity')
-def setTempHumid():
+@app.post('/sensor/temp')
+def setTemp():
     data = request.get_json()
     data['_id'] = id_generator(10)
     x = sensorsDB.find_one({'name': data['name']})
@@ -47,6 +47,19 @@ def setTempHumid():
     else:
         sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
     return jsonify(data)
+
+@app.post('/sensor/humidity')
+def setHumid():
+    data = request.get_json()
+    data['_id'] = id_generator(10)
+    x = sensorsDB.find_one({'name': data['name']})
+    if x is None:
+        sensorsDB.insert_one(data)
+    else:
+        sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
+    return jsonify(data)
+
+
 
 @app.post('/sensor/pump')
 def setPump():
@@ -82,7 +95,7 @@ def setLed():
     return jsonify(data)
 
 @app.get('/sensor/<string:name>')
-def getMoisture(name):
+def getSensorbyName(name):
     if name != "":
         x = sensorsDB.find_one({'name': name})
         if x is not None:
