@@ -8,7 +8,7 @@ app = Flask(__name__)
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-@app.get('/')
+@app.get('/settings')
 def hello_world():
     d = settingsDB.find({})
     data = [i for i in d]
@@ -111,6 +111,28 @@ def getSensors():
     x = sensorsDB.find({})
     data = [i for i in x]
     return jsonify(data)
+
+
+@app.post('/add/settings')
+def createSettings():
+    data = request.get_json()
+    data['_id'] = id_generator(10)
+    settingsDB.insert_one(data)
+    return jsonify({"message": "successfully added!", 
+                    "data": data})
+    
+@app.post('/delete/settings')
+def deleteSettings():
+    data = request.get_json()
+    settingsDB.delete_one({"_id": data['_id']})
+    return jsonify({'message': 'Successfully deleted!', "data": data})
+
+@app.post('/update/settings')
+def updateSettings():
+    data = request.get_json()
+    print(data)
+    settingsDB.update_one({"_id": data['_id']}, {"$set": data})
+    return jsonify({"message": "Successfully updated", 'data': data})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
