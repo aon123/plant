@@ -8,8 +8,12 @@ app = Flask(__name__)
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+@app.get('/')
+def index():
+    return jsonify({"message": "Welcome to Plant API!"})
+
 @app.get('/settings')
-def hello_world():
+def settings():
     d = settingsDB.find({})
     data = [i for i in d]
     return jsonify(data)
