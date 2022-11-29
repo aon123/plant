@@ -141,7 +141,13 @@ def deleteSettings():
 @app.post('/update/settings')
 def updateSettings():
     data = request.get_json()
-    print(data)
+    x = settingsDB.find({})
+    if data['selected'] == True:
+        for i in x:
+            if i['selected'] == True:
+                settingsDB.update_one({"_id": i['_id']}, {"$set": {'selected': False}})
+            else:
+                continue
     settingsDB.update_one({"_id": data['_id']}, {"$set": data})
     return jsonify({"message": "Successfully updated", 'data': data})
 
