@@ -122,7 +122,7 @@ def createSettings():
     data = request.get_json()
     data['_id'] = id_generator(10)
     settingsDB.insert_one(data)
-    x = sensorsDB.find({})
+    x = settingsDB.find({})
     if data['selected'] == True:
         for i in x:
             if i['selected'] == True:
