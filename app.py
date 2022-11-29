@@ -138,5 +138,41 @@ def updateSettings():
     settingsDB.update_one({"_id": data['_id']}, {"$set": data})
     return jsonify({"message": "Successfully updated", 'data': data})
 
+
+@app.get('/get/setting')
+def get_setting():
+    x = settingsDB.find_one({'selected': True})
+    return jsonify(x)
+
+@app.get('/activate/fan')
+def activate_fan():
+    sensorsDB.update_one({"name": "fan"}, {"$set": {"value": True}})
+    return jsonify({"data" : "done"})
+
+@app.get('/activate/pump')
+def activate_pump():
+    sensorsDB.update_one({"name": "pump"}, {"$set": {"value": True}})
+    return jsonify({"data" : "done"})
+
+@app.get('/activate/led')
+def activate_led():
+    sensorsDB.update_one({"name": "led"}, {"$set": {"value": True}})
+    return jsonify({"data" : "done"})
+
+
+@app.post('/select/setting')
+def select_setting():
+    data = request.get_json()
+    x = settingsDB.find({})
+    for i in x:
+        if i['_id'] == data["_id"]:
+            settingsDB.update_one({"_id": data['_id']},{"$set" : {"selected": True}})
+        else:
+            settingsDB.update_one({"_id": i['_id']},{"$set" : {"selected": False}})
+    d = settingsDB.find({})
+    data = [i for i in d]
+    return jsonify(data)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
