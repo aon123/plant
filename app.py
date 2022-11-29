@@ -135,7 +135,7 @@ def createSettings():
 @app.post('/delete/settings')
 def deleteSettings():
     data = request.get_json()
-    s = settingsDB.find({"_id": data['_id']})
+    s = settingsDB.find_one({"_id": data['_id']})
     if s['selected'] == True:
         settingsDB.update_one({"_id": "Y3DYTVQJST"}, {"$set": {'selected': True}})
     settingsDB.delete_one({"_id": data['_id']})
