@@ -182,9 +182,8 @@ def select_setting():
             settingsDB.update_one({"_id": data['_id']},{"$set" : {"selected": True}})
         else:
             settingsDB.update_one({"_id": i['_id']},{"$set" : {"selected": False}})
-    d = settingsDB.find({})
-    data = [i for i in d]
-    return jsonify(data)
+    d = settingsDB.find_one({"selected": True})
+    return jsonify(d)
 
 
 if __name__ == "__main__":
