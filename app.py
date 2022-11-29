@@ -121,7 +121,6 @@ def getSensors():
 def createSettings():
     data = request.get_json()
     data['_id'] = id_generator(10)
-    settingsDB.insert_one(data)
     x = settingsDB.find({})
     if data['selected'] == True:
         for i in x:
@@ -129,6 +128,7 @@ def createSettings():
                 settingsDB.update_one({"_id": i['_id']}, {"$set": {'selected': False}})
             else:
                 continue
+    settingsDB.insert_one(data)
     return jsonify({"message": "successfully added!", 
                     "data": data})
     
