@@ -30,6 +30,40 @@ def setLight():
     return jsonify(data)
 
 
+@app.post('/deactivate/light')
+def deactivateLight():
+    data = request.get_json()
+    data['_id'] = id_generator(10)
+    x = sensorsDB.find_one({'name': data['name']})
+    if x is None:
+        sensorsDB.insert_one(data)
+    else:
+        sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
+    return jsonify(data)
+
+
+@app.post('/deactivate/fan')
+def deactivateFan():
+    data = request.get_json()
+    data['_id'] = id_generator(10)
+    x = sensorsDB.find_one({'name': data['name']})
+    if x is None:
+        sensorsDB.insert_one(data)
+    else:
+        sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
+    return jsonify(data)
+
+@app.post('/deactivate/pump')
+def deactivatePump():
+    data = request.get_json()
+    data['_id'] = id_generator(10)
+    x = sensorsDB.find_one({'name': data['name']})
+    if x is None:
+        sensorsDB.insert_one(data)
+    else:
+        sensorsDB.update_one({"name": data['name']}, {"$set": {'value': data['value']}})
+    return jsonify(data)
+
 @app.post('/sensor/moisture')
 def setMoisture():
     data = request.get_json()
