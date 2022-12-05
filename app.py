@@ -210,6 +210,22 @@ def activate_led():
     return jsonify({"data" : "done"})
 
 
+@app.get('/deactivate/fan')
+def activate_fan():
+    sensorsDB.update_one({"name": "fan"}, {"$set": {"value": False}})
+    return jsonify({"data" : "done"})
+
+@app.get('/deactivate/pump')
+def activate_pump():
+    sensorsDB.update_one({"name": "pump"}, {"$set": {"value": False}})
+    return jsonify({"data" : "done"})
+
+@app.get('/deactivate/led')
+def activate_led():
+    sensorsDB.update_one({"name": "led"}, {"$set": {"value": False}})
+    return jsonify({"data" : "done"})
+
+
 @app.post('/select/setting')
 def select_setting():
     data = request.get_json()
